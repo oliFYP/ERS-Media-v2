@@ -1,0 +1,55 @@
+/* Import fonts first */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap");
+
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables */
+:root {
+  --background: 0 0% 10%;
+  --foreground: 0 0% 98%;
+  --border: 0 0% 20%;
+  --primary: 32 70% 50%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 18%;
+  --muted-foreground: 0 0% 65%;
+  --radius: 0.75rem;
+}
+
+/* Base body styles */
+body {
+  @apply bg-background text-foreground font-sans antialiased;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #d68a2d 100%);
+}
+
+/* Custom utilities */
+@layer utilities {
+  .border-border {
+    border-color: hsl(var(--border));
+  }
+
+  .bg-background {
+    background-color: hsl(var(--background));
+  }
+
+  .text-foreground {
+    color: hsl(var(--foreground));
+  }
+
+  .bg-input {
+    background-color: hsl(var(--secondary));
+  }
+
+  .glass-card {
+    background: hsl(0 0% 12% / 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border));
+  }
+
+  .glow-orange {
+    box-shadow: 0 0 30px hsl(32 70% 50% / 0.3);
+  }
+}
