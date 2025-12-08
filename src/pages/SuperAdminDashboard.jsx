@@ -28,16 +28,16 @@ const SuperAdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen ">
       {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
+      <header className="glass-card shadow rounded-xl">
+        <div className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex justify-between items-center ">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-white">
                 Super Admin Dashboard
               </h1>
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="text-sm text-white mt-1 ">
                 Welcome back, {profile?.full_name || profile?.email}
               </p>
             </div>
@@ -55,11 +55,11 @@ const SuperAdminDashboard = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="glass-card rounded-lg shadow p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Admins</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">12</p>
+                <p className="text-sm text-white">Total Admins</p>
+                <p className="text-3xl font-bold text-white mt-1">12</p>
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
                 <svg
@@ -79,11 +79,11 @@ const SuperAdminDashboard = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="glass-card rounded-lg shadow p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Clients</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">48</p>
+                <p className="text-sm text-white">Total Clients</p>
+                <p className="text-3xl font-bold text-white mt-1">48</p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
                 <svg
@@ -103,11 +103,11 @@ const SuperAdminDashboard = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="glass-card rounded-lg shadow p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Active Tasks</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">127</p>
+                <p className="text-sm text-white">Active Tasks</p>
+                <p className="text-3xl font-bold text-white mt-1">127</p>
               </div>
               <div className="bg-orange-100 p-3 rounded-full">
                 <svg
@@ -129,14 +129,14 @@ const SuperAdminDashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="glass-card rounded-lg shadow p-6 mb-8">
+          <h2 className="text-xl font-semibold text-white mb-4">
             Quick Actions
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 hover:text-black md:grid-cols-2 lg:grid-cols-4 gap-4">
             <button
               onClick={() => setShowInviteModal(true)}
-              className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-3 p-4 rounded-lg  glass-orange"
             >
               <svg
                 className="w-6 h-6 text-blue-600"
@@ -151,10 +151,10 @@ const SuperAdminDashboard = () => {
                   d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
                 />
               </svg>
-              <span className="font-medium text-gray-700">Invite User</span>
+              <span className="font-medium text-white">Invite User</span>
             </button>
 
-            <button className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <button className="flex items-center gap-3 p-4  rounded-lg glass-orange">
               <svg
                 className="w-6 h-6 text-green-600"
                 fill="none"
@@ -168,10 +168,10 @@ const SuperAdminDashboard = () => {
                   d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                 />
               </svg>
-              <span className="font-medium text-gray-700">View Reports</span>
+              <span className="font-medium text-white">View Reports</span>
             </button>
 
-            <button className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <button className="flex items-center gap-3 p-4 glass-orange rounded-lg ">
               <svg
                 className="w-6 h-6 text-orange-600"
                 fill="none"
@@ -191,10 +191,10 @@ const SuperAdminDashboard = () => {
                   d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
-              <span className="font-medium text-gray-700">Settings</span>
+              <span className="font-medium text-white">Settings</span>
             </button>
 
-            <button className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <button className="flex items-center gap-3 p-4  rounded-lg glass-orange">
               <svg
                 className="w-6 h-6 text-purple-600"
                 fill="none"
@@ -208,14 +208,14 @@ const SuperAdminDashboard = () => {
                   d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                 />
               </svg>
-              <span className="font-medium text-gray-700">Analytics</span>
+              <span className="font-medium text-white">Analytics</span>
             </button>
           </div>
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="glass-card rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold text-white mb-4">
             Recent Activity
           </h2>
           <div className="space-y-4">
@@ -236,10 +236,10 @@ const SuperAdminDashboard = () => {
                 </svg>
               </div>
               <div className="flex-1">
-                <p className="text-sm text-gray-900 font-medium">
+                <p className="text-sm text-white font-medium">
                   New admin account created
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-white mt-1">
                   John Doe joined as Admin • 2 hours ago
                 </p>
               </div>
@@ -262,10 +262,8 @@ const SuperAdminDashboard = () => {
                 </svg>
               </div>
               <div className="flex-1">
-                <p className="text-sm text-gray-900 font-medium">
-                  Task completed
-                </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-sm text-white font-medium">Task completed</p>
+                <p className="text-xs text-white mt-1">
                   Website redesign project completed • 5 hours ago
                 </p>
               </div>
@@ -288,10 +286,10 @@ const SuperAdminDashboard = () => {
                 </svg>
               </div>
               <div className="flex-1">
-                <p className="text-sm text-gray-900 font-medium">
+                <p className="text-sm text-white font-medium">
                   Client assignment updated
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-white mt-1">
                   3 clients assigned to Sarah Smith • Yesterday
                 </p>
               </div>

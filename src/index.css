@@ -1,24 +1,26 @@
 /* Import fonts first */
+/* Import fonts */
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap");
 
-/* Tailwind directives */
+/* Tailwind base setup */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* CSS Variables */
+/* Global CSS Variables */
 :root {
   --background: 0 0% 10%;
   --foreground: 0 0% 98%;
   --border: 0 0% 20%;
   --primary: 32 70% 50%;
+  --primary-hover: 32 70% 45%;
   --primary-foreground: 0 0% 98%;
   --secondary: 0 0% 18%;
   --muted-foreground: 0 0% 65%;
   --radius: 0.75rem;
 }
 
-/* Base body styles */
+/* Global body styles */
 body {
   @apply bg-background text-foreground font-sans antialiased;
   min-height: 100vh;
@@ -39,6 +41,10 @@ body {
     color: hsl(var(--foreground));
   }
 
+  .text-muted {
+    color: hsl(var(--muted-foreground));
+  }
+
   .bg-input {
     background-color: hsl(var(--secondary));
   }
@@ -49,7 +55,29 @@ body {
     border: 1px solid hsl(var(--border));
   }
 
-  .glow-orange {
-    box-shadow: 0 0 30px hsl(32 70% 50% / 0.3);
+  .bg-primary {
+    background-color: hsl(var(--primary));
+  }
+
+  .hover\:bg-primary-hover:hover {
+    background-color: hsl(var(--primary-hover));
+  }
+
+  .text-primary {
+    color: hsl(var(--primary));
+  }
+
+  /* Make sure this is in your index.css or global CSS */
+  .glass-orange {
+    border: 1px solid hsl(32 70% 50%);
+
+    border-radius: 0.75rem; /* matches your tailwind rounded-lg */
+    transition: box-shadow 0.3s, border-color 0.3s;
+  }
+
+  .glass-orange:focus {
+    outline: none; /* remove default browser focus */
+    box-shadow: 0 0 20px hsl(32 70% 50% / 0.6); /* glow effect */
+    border-color: hsl(32 70% 50%);
   }
 }
