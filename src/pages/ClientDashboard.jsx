@@ -1,5 +1,6 @@
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 
 const ClientDashboard = () => {
   const { profile, signOut } = useAuth();

@@ -55,6 +55,13 @@ body {
     border: 1px solid hsl(var(--border));
   }
 
+  .glass-card-dark {
+    background: hsl(0 0% 8% / 0.85);
+    backdrop-filter: blur(14px);
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+  }
+
   .bg-primary {
     background-color: hsl(var(--primary));
   }
@@ -79,5 +86,22 @@ body {
     outline: none; /* remove default browser focus */
     box-shadow: 0 0 20px hsl(32 70% 50% / 0.6); /* glow effect */
     border-color: hsl(32 70% 50%);
+  }
+
+  /* Orange button */
+  .btn-orange {
+    background-color: hsl(32 70% 50%);
+    color: hsl(var(--foreground)); /* keeps text readable */
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    border: 1px solid hsl(32 70% 50%);
+    font-weight: 500;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+  }
+
+  .btn-orange:hover {
+    background-color: hsl(32 70% 45%); /* slightly darker on hover */
+    box-shadow: 0 4px 12px hsl(32 70% 50% / 0.4); /* subtle glow */
   }
 }

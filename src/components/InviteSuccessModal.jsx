@@ -17,7 +17,7 @@ const InviteSuccessModal = ({ isOpen, onClose, inviteLink, email, role }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-lg w-full p-6">
+      <div className="glass-card rounded-lg shadow-xl max-w-lg w-full p-6">
         <div className="text-center mb-6">
           <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
             <svg
@@ -34,10 +34,10 @@ const InviteSuccessModal = ({ isOpen, onClose, inviteLink, email, role }) => {
               />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl font-bold text-white mb-2">
             Invite Created!
           </h2>
-          <p className="text-gray-600">
+          <p className="text-white">
             An invite has been created for{" "}
             <span className="font-semibold">{email}</span> as a{" "}
             <span className="font-semibold capitalize">
@@ -46,8 +46,8 @@ const InviteSuccessModal = ({ isOpen, onClose, inviteLink, email, role }) => {
           </p>
         </div>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        <div className="glass-card-dark border border-gray-200 rounded-lg p-4 mb-4">
+          <label className="block text-sm font-medium text-white mb-2">
             Invite Link (expires in 7 days)
           </label>
           <div className="flex gap-2">
@@ -55,11 +55,11 @@ const InviteSuccessModal = ({ isOpen, onClose, inviteLink, email, role }) => {
               type="text"
               value={inviteLink}
               readOnly
-              className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm font-mono"
+              className="flex-1 px-3 py-2 bg-input glass-orange rounded-lg text-sm font-mono"
             />
             <button
               onClick={handleCopy}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-orange text-white rounded-lg btn-orange flex items-center gap-2"
             >
               {copied ? (
                 <>
@@ -100,10 +100,11 @@ const InviteSuccessModal = ({ isOpen, onClose, inviteLink, email, role }) => {
           </div>
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <div className="glass-card-dark border border-blue-200 rounded-lg p-4 mb-6">
           <div className="flex gap-3">
             <svg
-              className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"
+              className="w-5 h-5 flex-shrink-0 mt-0.5"
+              style={{ color: "hsl(32 70% 50%)" }}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -115,7 +116,7 @@ const InviteSuccessModal = ({ isOpen, onClose, inviteLink, email, role }) => {
                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <div className="text-sm text-blue-800">
+            <div className="text-sm text-white">
               <p className="font-medium mb-1">Next Steps:</p>
               <ol className="list-decimal list-inside space-y-1">
                 <li>Send this link to {email}</li>
@@ -128,7 +129,7 @@ const InviteSuccessModal = ({ isOpen, onClose, inviteLink, email, role }) => {
 
         <button
           onClick={onClose}
-          className="w-full px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+          className="w-full px-4 py-2  text-white rounded-lg btn-orange"
         >
           Done
         </button>
