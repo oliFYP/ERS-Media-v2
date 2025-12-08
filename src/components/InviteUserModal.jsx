@@ -52,8 +52,7 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
       // Create the invite link
       const inviteLink = `${window.location.origin}/create-account?token=${token}`;
 
-      // In production, you would send this via email
-      // For now, we'll show it to copy
+      // For now, just show the link (we'll add email sending later)
       console.log("Invite Link:", inviteLink);
 
       // Show success and pass invite link

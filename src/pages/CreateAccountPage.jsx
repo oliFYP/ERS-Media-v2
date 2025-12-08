@@ -99,6 +99,9 @@ const CreateAccountPage = () => {
         throw new Error("Failed to create user account.");
       }
 
+      // Wait a moment for auth user to be created
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Create profile
       const { error: profileError } = await supabase.from("profiles").insert([
         {
@@ -129,7 +132,10 @@ const CreateAccountPage = () => {
       });
     } catch (err) {
       console.error("Error creating account:", err);
-      if (err.message.includes("already registered")) {
+      if (
+        err.message.includes("already registered") ||
+        err.message.includes("already been registered")
+      ) {
         setError(
           "This email is already registered. Please use the login page."
         );
