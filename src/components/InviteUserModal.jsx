@@ -14,26 +14,26 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
     setLoading(true);
 
     try {
-      // Generate unique token
       const token = crypto.randomUUID();
 
-      // Calculate expiration (7 days from now)
       const expiresAt = new Date();
       expiresAt.setDate(expiresAt.getDate() + 7);
 
-      // Get current user
       const {
         data: { user },
       } = await supabase.auth.getUser();
 
-      // Create invite record
+      if (!user) {
+        throw new Error("You must be logged in to send invites.");
+      }
+
       const { data, error: inviteError } = await supabase
         .from("invites")
         .insert([
           {
             email: email.toLowerCase().trim(),
-            role: role,
-            token: token,
+            role,
+            token,
             invited_by: user.id,
             expires_at: expiresAt.toISOString(),
             used: false,
@@ -46,24 +46,20 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
         if (inviteError.code === "23505") {
           throw new Error("An active invite already exists for this email.");
         }
-        throw inviteError;
+        throw new Error(inviteError.message || "Failed to create invite.");
       }
 
-      // Create the invite link
       const inviteLink = `${window.location.origin}/create-account?token=${token}`;
 
-      // For now, just show the link (we'll add email sending later)
-      console.log("Invite Link:", inviteLink);
+      if (onSuccess && typeof onSuccess === "function") {
+        onSuccess(inviteLink, email, role);
+      }
 
-      // Show success and pass invite link
-      onSuccess(inviteLink, email, role);
-
-      // Reset form
       setEmail("");
       setRole(ROLES.CLIENT);
+
       onClose();
     } catch (err) {
-      console.error("Error creating invite:", err);
       setError(err.message || "Failed to create invite. Please try again.");
     } finally {
       setLoading(false);
@@ -100,8 +96,8 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600">{error}</p>
+            <div className="p-3 bg-red-500/20 border border-red-500/50 rounded-lg">
+              <p className="text-sm text-red-300">{error}</p>
             </div>
           )}
 
@@ -119,7 +115,7 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="user@example.com"
-              className="w-full px-3 py-2 border bg-input glass-orange rounded-lg  "
+              className="w-full px-3 py-2 border bg-input glass-orange rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
               required
               disabled={loading}
             />
@@ -137,15 +133,22 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-3 py-2 border glass-orange bg-input rounded-lg glass-orange"
+              className="w-full px-3 py-2 border glass-orange bg-input rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
               required
               disabled={loading}
             >
-              <option value={ROLES.CLIENT}>Client</option>
-              <option value={ROLES.ADMIN}>Admin</option>
-              <option value={ROLES.SUPER_ADMIN}>Super Admin</option>
+              <option value={ROLES.CLIENT} className="bg-gray-800">
+                Client
+              </option>
+              <option value={ROLES.ADMIN} className="bg-gray-800">
+                Admin
+              </option>
+              <option value={ROLES.SUPER_ADMIN} className="bg-gray-800">
+                Super Admin
+              </option>
             </select>
-            <p className="text-xs text-white mt-1">
+
+            <p className="text-xs text-gray-300 mt-1">
               {role === ROLES.SUPER_ADMIN &&
                 "Full system access - can manage all users and settings"}
               {role === ROLES.ADMIN &&
@@ -160,14 +163,15 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 text-white rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex-1 px-4 py-2 border border-gray-300 text-white rounded-lg hover:bg-gray-700/50 transition-colors"
               disabled={loading}
             >
               Cancel
             </button>
+
             <button
               type="submit"
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               disabled={loading}
             >
               {loading ? (

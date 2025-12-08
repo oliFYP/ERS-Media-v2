@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 import InviteUserModal from "../components/InviteUserModal";
 import InviteSuccessModal from "../components/InviteSuccessModal";
 
@@ -13,8 +14,23 @@ const SuperAdminDashboard = () => {
   const [inviteDetails, setInviteDetails] = useState(null);
 
   const handleSignOut = async () => {
-    await signOut();
-    navigate("/login");
+    try {
+      await signOut();
+
+      // Verify logout
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        console.log("Logout successful ✅");
+      } else {
+        console.warn("Logout might have failed ❌", session);
+      }
+
+      navigate("/login");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   const handleInviteSuccess = (inviteLink, email, role) => {
