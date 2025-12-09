@@ -1,14 +1,31 @@
-import { useAuth } from "../hooks/useAuth";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 
 const ClientDashboard = () => {
-  const { profile, signOut } = useAuth();
+  const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        const { data } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+        setProfile(data);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const handleSignOut = async () => {
     try {
-      await signOut();
+      await supabase.auth.signOut();
 
       // Verify logout
       const {

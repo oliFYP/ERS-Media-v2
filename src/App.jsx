@@ -1,7 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "./hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
-import LoadingSpinner from "./components/LoadingSpinner";
 
 // Pages
 import LoginPage from "./pages/LoginPage";
@@ -56,40 +54,14 @@ function App() {
           }
         />
 
-        {/* Root redirect based on authentication */}
-        <Route path="/" element={<RootRedirect />} />
+        {/* Root - redirect to login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
         {/* Catch all - redirect to login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );
-}
-
-// Component to handle root redirect based on user role
-function RootRedirect() {
-  const { loading, initialized, isAuthenticated, profile } = useAuth();
-
-  // Wait for auth to initialize
-  if (!initialized || loading) {
-    return <LoadingSpinner />;
-  }
-
-  if (!isAuthenticated || !profile) {
-    return <Navigate to="/login" replace />;
-  }
-
-  // Redirect based on role
-  switch (profile?.role) {
-    case ROLES.SUPER_ADMIN:
-      return <Navigate to="/super-admin/dashboard" replace />;
-    case ROLES.ADMIN:
-      return <Navigate to="/admin/dashboard" replace />;
-    case ROLES.CLIENT:
-      return <Navigate to="/client/dashboard" replace />;
-    default:
-      return <Navigate to="/unauthorized" replace />;
-  }
 }
 
 export default App;
