@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [initialized, setInitialized] = useState(false); // Add this flag
 
   useEffect(() => {
     let mounted = true;
@@ -37,6 +38,11 @@ export const AuthProvider = ({ children }) => {
         console.error("Error initializing auth:", error);
         if (mounted) {
           setLoading(false);
+        }
+      } finally {
+        // Mark as initialized after first check completes
+        if (mounted) {
+          setInitialized(true);
         }
       }
     };
@@ -107,6 +113,7 @@ export const AuthProvider = ({ children }) => {
     user,
     profile,
     loading,
+    initialized, // Add this to the context value
     signIn,
     signOut,
     isAuthenticated: !!user,
