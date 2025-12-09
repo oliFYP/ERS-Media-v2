@@ -15,7 +15,6 @@ import ClientDashboard from "./pages/ClientDashboard";
 
 // Role constants
 import { ROLES } from "./utils/roleHelpers";
-
 import "./App.css";
 
 function App() {
@@ -69,13 +68,14 @@ function App() {
 
 // Component to handle root redirect based on user role
 function RootRedirect() {
-  const { loading, isAuthenticated, profile } = useAuth();
+  const { loading, initialized, isAuthenticated, profile } = useAuth();
 
-  if (loading) {
+  // Wait for auth to initialize
+  if (!initialized || loading) {
     return <LoadingSpinner />;
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !profile) {
     return <Navigate to="/login" replace />;
   }
 

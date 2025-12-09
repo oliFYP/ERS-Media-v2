@@ -125,7 +125,7 @@ const LoginPage = () => {
                     setEmail(e.target.value);
                     setError("");
                   }}
-                  className="w-full h-12 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                  className="w-full h-12 px-4 py-2 bg-input rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
                   required
                   disabled={loading}
                 />
@@ -149,7 +149,7 @@ const LoginPage = () => {
                       setPassword(e.target.value);
                       setError("");
                     }}
-                    className="w-full h-12 px-4 py-2 pr-12 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                    className="w-full h-12 px-4 py-2 pr-12 bg-input rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
                     required
                     disabled={loading}
                   />

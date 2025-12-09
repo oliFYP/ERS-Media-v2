@@ -10,7 +10,6 @@ const AdminDashboard = () => {
     try {
       await signOut();
 
-      // Verify logout
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -27,16 +26,14 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen ">
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="glass-card rounded-xl shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Admin Dashboard
-              </h1>
-              <p className="text-sm text-gray-600 mt-1">
+              <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
+              <p className="text-sm text-white mt-1">
                 Welcome back, {profile?.full_name || profile?.email}
               </p>
             </div>
@@ -54,11 +51,11 @@ const AdminDashboard = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="glass-card rounded-lg shadow p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">My Clients</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">8</p>
+                <p className="text-sm text-white">My Clients</p>
+                <p className="text-3xl font-bold text-white mt-1">8</p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
                 <svg
@@ -78,11 +75,11 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="glass-card rounded-lg shadow p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Active Tasks</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">24</p>
+                <p className="text-sm text-white">Active Tasks</p>
+                <p className="text-3xl font-bold text-white mt-1">24</p>
               </div>
               <div className="bg-orange-100 p-3 rounded-full">
                 <svg
@@ -102,11 +99,11 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="glass-card rounded-lg shadow p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Pending Approvals</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">3</p>
+                <p className="text-sm text-white">Pending Approvals</p>
+                <p className="text-3xl font-bold text-white mt-1">3</p>
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
                 <svg
@@ -128,12 +125,12 @@ const AdminDashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="glass-card rounded-lg shadow p-6 mb-8">
+          <h2 className="text-xl font-semibold text-white mb-4">
             Quick Actions
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <button className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <button className="flex items-center gap-3 p-4 rounded-lg glass-orange transition-colors">
               <svg
                 className="w-6 h-6 text-green-600"
                 fill="none"
@@ -147,10 +144,10 @@ const AdminDashboard = () => {
                   d="M12 4v16m8-8H4"
                 />
               </svg>
-              <span className="font-medium text-gray-700">Create Task</span>
+              <span className="font-medium text-white">Create Task</span>
             </button>
 
-            <button className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <button className="flex items-center gap-3 p-4  rounded-lg  glass-orange transition-colors">
               <svg
                 className="w-6 h-6 text-blue-600"
                 fill="none"
@@ -164,10 +161,10 @@ const AdminDashboard = () => {
                   d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
               </svg>
-              <span className="font-medium text-gray-700">View Calendar</span>
+              <span className="font-medium text-white">View Calendar</span>
             </button>
 
-            <button className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <button className="flex items-center gap-3 p-4 rounded-lg  glass-orange transition-colors">
               <svg
                 className="w-6 h-6 text-orange-600"
                 fill="none"
@@ -181,7 +178,7 @@ const AdminDashboard = () => {
                   d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
                 />
               </svg>
-              <span className="font-medium text-gray-700">Manage Clients</span>
+              <span className="font-medium text-white">Manage Clients</span>
             </button>
           </div>
         </div>
@@ -189,32 +186,24 @@ const AdminDashboard = () => {
         {/* My Clients & Tasks */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* My Clients */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="glass-card rounded-lg shadow p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">
-                My Clients
-              </h2>
-              <button className="text-sm text-blue-600 hover:text-blue-700">
-                View All
-              </button>
+              <h2 className="text-xl font-semibold text-white">My Clients</h2>
+              <button className="text-sm text-orange">View All</button>
             </div>
             <div className="space-y-3">
               {[1, 2, 3].map((client) => (
                 <div
                   key={client}
-                  className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50"
+                  className="flex items-center justify-between p-3 rounded-lg  glass-orange"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
                       <span className="text-blue-600 font-semibold">JD</span>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">
-                        John Doe
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        john.doe@example.com
-                      </p>
+                      <p className="text-sm font-medium text-white">John Doe</p>
+                      <p className="text-xs text-white">john.doe@example.com</p>
                     </div>
                   </div>
                   <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
@@ -226,14 +215,10 @@ const AdminDashboard = () => {
           </div>
 
           {/* Recent Tasks */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="glass-card rounded-lg shadow p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">
-                Recent Tasks
-              </h2>
-              <button className="text-sm text-blue-600 hover:text-blue-700">
-                View All
-              </button>
+              <h2 className="text-xl font-semibold text-white">Recent Tasks</h2>
+              <button className="text-sm text-orange">View All</button>
             </div>
             <div className="space-y-3">
               {[
@@ -255,13 +240,13 @@ const AdminDashboard = () => {
               ].map((task, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-3 border border-gray-200 rounded-lg"
+                  className="flex items-center justify-between p-3  glass-orange rounded-lg"
                 >
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-white">
                       {task.title}
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">Due in 2 days</p>
+                    <p className="text-xs text-white mt-1">Due in 2 days</p>
                   </div>
                   <span
                     className={`px-2 py-1 bg-${task.color}-100 text-${task.color}-700 text-xs rounded-full`}

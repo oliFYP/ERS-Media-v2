@@ -21,6 +21,7 @@ const SuperAdminDashboard = () => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
+
       if (!session) {
         console.log("Logout successful ✅");
       } else {
@@ -235,7 +236,10 @@ const SuperAdminDashboard = () => {
             Recent Activity
           </h2>
           <div className="space-y-4">
-            <div className="flex items-start gap-4 pb-4 border-b border-gray-200">
+            <div
+              className="flex items-start gap-4 pb-4 border-b "
+              style={{ borderColor: "hsl(32 70% 50%)" }}
+            >
               <div className="bg-blue-100 p-2 rounded-full">
                 <svg
                   className="w-5 h-5 text-blue-600"
@@ -261,7 +265,10 @@ const SuperAdminDashboard = () => {
               </div>
             </div>
 
-            <div className="flex items-start gap-4 pb-4 border-b border-gray-200">
+            <div
+              className="flex items-start gap-4 pb-4 border-b "
+              style={{ borderColor: "hsl(32 70% 50%)" }}
+            >
               <div className="bg-green-100 p-2 rounded-full">
                 <svg
                   className="w-5 h-5 text-green-600"
