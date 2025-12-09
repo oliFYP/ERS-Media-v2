@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import { ROLES } from "../utils/roleHelpers";
 
@@ -8,17 +8,30 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Reset modal state when opened
+  useEffect(() => {
+    if (isOpen) {
+      setEmail("");
+      setRole(ROLES.CLIENT);
+      setError("");
+      setLoading(false);
+    }
+  }, [isOpen]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
+      if (!email) throw new Error("Please enter a valid email.");
+
       const token = crypto.randomUUID();
 
       const expiresAt = new Date();
       expiresAt.setDate(expiresAt.getDate() + 7);
 
+      // Get currently logged-in user
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -27,6 +40,10 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
         throw new Error("You must be logged in to send invites.");
       }
 
+      // DEBUG: check email before sending
+      console.log("Sending invite to:", email, "with token:", token);
+
+      // Insert invite into DB
       const { data, error: inviteError } = await supabase
         .from("invites")
         .insert([
@@ -49,16 +66,15 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
         throw new Error(inviteError.message || "Failed to create invite.");
       }
 
+      // Generate link for the user
       const inviteLink = `${window.location.origin}/create-account?token=${token}`;
 
+      // Notify parent of success
       if (onSuccess && typeof onSuccess === "function") {
         onSuccess(inviteLink, email, role);
       }
 
-      setEmail("");
-      setRole(ROLES.CLIENT);
-
-      onClose();
+      onClose(); // Close modal
     } catch (err) {
       setError(err.message || "Failed to create invite. Please try again.");
     } finally {
@@ -112,6 +128,7 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
             <input
               id="email"
               type="email"
+              autoComplete="off"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="user@example.com"
@@ -137,25 +154,10 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
               required
               disabled={loading}
             >
-              <option value={ROLES.CLIENT} className="bg-gray-800">
-                Client
-              </option>
-              <option value={ROLES.ADMIN} className="bg-gray-800">
-                Admin
-              </option>
-              <option value={ROLES.SUPER_ADMIN} className="bg-gray-800">
-                Super Admin
-              </option>
+              <option value={ROLES.CLIENT}>Client</option>
+              <option value={ROLES.ADMIN}>Admin</option>
+              <option value={ROLES.SUPER_ADMIN}>Super Admin</option>
             </select>
-
-            <p className="text-xs text-gray-300 mt-1">
-              {role === ROLES.SUPER_ADMIN &&
-                "Full system access - can manage all users and settings"}
-              {role === ROLES.ADMIN &&
-                "Can manage assigned clients, tasks, and calendars"}
-              {role === ROLES.CLIENT &&
-                "Can view tasks, calendar, and submit feedback"}
-            </p>
           </div>
 
           {/* Action Buttons */}
@@ -174,47 +176,7 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
               className="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               disabled={loading}
             >
-              {loading ? (
-                <>
-                  <svg
-                    className="animate-spin h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Creating...
-                </>
-              ) : (
-                <>
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                    />
-                  </svg>
-                  Send Invite
-                </>
-              )}
+              {loading ? "Creating..." : "Send Invite"}
             </button>
           </div>
         </form>

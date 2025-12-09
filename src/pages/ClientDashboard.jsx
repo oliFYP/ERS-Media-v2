@@ -7,8 +7,23 @@ const ClientDashboard = () => {
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
-    await signOut();
-    navigate("/login");
+    try {
+      await signOut();
+
+      // Verify logout
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        console.log("Logout successful ✅");
+      } else {
+        console.warn("Logout might have failed ❌", session);
+      }
+
+      navigate("/login");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   return (
