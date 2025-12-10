@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { ROLES } from "../utils/roleHelpers";
 import CompanyLogo from "../assets/company-logo.png";
+import { Eye, EyeOff } from "lucide-react";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -114,21 +115,21 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      {/* Logo */}
-      <header className="p-6 lg:p-8">
+    <div className="min-h-screen flex flex-col">
+      {/* Logo - Centered on Mobile, Left on Desktop */}
+      <header className="pt-6 pl-6 lg:pt-8 lg:pl-8 flex justify-center lg:justify-start">
         <div className="flex items-center gap-3">
           <img
             src={CompanyLogo}
             alt="Company Logo"
-            className="h-auto object-contain"
-            style={{ width: "200px" }}
+            className="h-auto object-contain mx-auto lg:mx-0"
+            style={{ width: "180px" }}
           />
         </div>
       </header>
 
       {/* Login Form */}
-      <main className="flex items-center justify-center px-4 pb-12 pt-8">
+      <main className="flex-1 flex items-center justify-center px-4 pb-12">
         <div className="w-full max-w-md">
           <div
             className="rounded-2xl p-8 shadow-xl"
@@ -193,10 +194,14 @@ const LoginPage = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors duration-200"
                     disabled={loading}
                   >
-                    {showPassword ? "🙈" : "👁️"}
+                    {showPassword ? (
+                      <EyeOff size={20} strokeWidth={2} />
+                    ) : (
+                      <Eye size={20} strokeWidth={2} />
+                    )}
                   </button>
                 </div>
               </div>

@@ -80,7 +80,7 @@ const CreateAccountPage = () => {
     setSubmitting(true);
 
     try {
-      // Create auth user
+      // Create auth user - the trigger will handle profile creation
       const { data: authData, error: signUpError } = await supabase.auth.signUp(
         {
           email: inviteData.email,
@@ -89,6 +89,7 @@ const CreateAccountPage = () => {
             data: {
               full_name: fullName,
             },
+            emailRedirectTo: `${window.location.origin}/dashboard`,
           },
         }
       );
@@ -99,37 +100,39 @@ const CreateAccountPage = () => {
         throw new Error("Failed to create user account.");
       }
 
-      // Wait a moment for auth user to be created
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Wait for trigger to complete
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      // Create profile
-      const { error: profileError } = await supabase.from("profiles").insert([
-        {
-          id: authData.user.id,
+      // Sign in the user immediately
+      const { data: signInData, error: signInError } =
+        await supabase.auth.signInWithPassword({
           email: inviteData.email,
-          full_name: fullName,
-          role: inviteData.role,
-          is_active: true,
-        },
-      ]);
+          password: password,
+        });
 
-      if (profileError) throw profileError;
+      if (signInError) throw signInError;
 
-      // Mark invite as used
-      const { error: updateError } = await supabase
-        .from("invites")
-        .update({ used: true })
-        .eq("token", token);
+      // Verify profile was created
+      const { data: profile, error: profileCheckError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", authData.user.id)
+        .single();
 
-      if (updateError) console.error("Error updating invite:", updateError);
+      if (profileCheckError || !profile) {
+        throw new Error("Profile creation failed. Please contact support.");
+      }
 
-      // Success - redirect to login
-      navigate("/login", {
-        state: {
-          message: "Account created successfully! Please log in.",
-          email: inviteData.email,
-        },
-      });
+      // Success - redirect to appropriate dashboard based on role
+      if (profile.role === "super_admin") {
+        navigate("/super-admin");
+      } else if (profile.role === "admin") {
+        navigate("/admin");
+      } else if (profile.role === "client") {
+        navigate("/client");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       console.error("Error creating account:", err);
       if (
