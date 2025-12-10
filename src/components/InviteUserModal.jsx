@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
+import { sendInviteEmail } from "../services/emailService";
 import { ROLES } from "../utils/roleHelpers";
 
 const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
@@ -7,6 +8,7 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
   const [role, setRole] = useState(ROLES.CLIENT);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [sendingEmail, setSendingEmail] = useState(false);
 
   // Reset modal state when opened
   useEffect(() => {
@@ -15,6 +17,7 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
       setRole(ROLES.CLIENT);
       setError("");
       setLoading(false);
+      setSendingEmail(false);
     }
   }, [isOpen]);
 
@@ -27,7 +30,6 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
       if (!email) throw new Error("Please enter a valid email.");
 
       const token = crypto.randomUUID();
-
       const expiresAt = new Date();
       expiresAt.setDate(expiresAt.getDate() + 7);
 
@@ -39,9 +41,6 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
       if (!user) {
         throw new Error("You must be logged in to send invites.");
       }
-
-      // DEBUG: check email before sending
-      console.log("Sending invite to:", email, "with token:", token);
 
       // Insert invite into DB
       const { data, error: inviteError } = await supabase
@@ -66,19 +65,36 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
         throw new Error(inviteError.message || "Failed to create invite.");
       }
 
-      // Generate link for the user
+      // Generate invite link
       const inviteLink = `${window.location.origin}/create-account?token=${token}`;
+
+      // Send email
+      setSendingEmail(true);
+      try {
+        await sendInviteEmail(email.toLowerCase().trim(), role, inviteLink);
+        console.log("✅ Email sent successfully to:", email);
+      } catch (emailError) {
+        console.error("Email sending failed:", emailError);
+        // Still show success modal with link even if email fails
+        setError(
+          "Invite created but email failed to send. Please share the link manually."
+        );
+      }
 
       // Notify parent of success
       if (onSuccess && typeof onSuccess === "function") {
         onSuccess(inviteLink, email, role);
       }
 
-      onClose(); // Close modal
+      // Only close if no error
+      if (!error) {
+        onClose();
+      }
     } catch (err) {
       setError(err.message || "Failed to create invite. Please try again.");
     } finally {
       setLoading(false);
+      setSendingEmail(false);
     }
   };
 
@@ -114,6 +130,33 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
           {error && (
             <div className="p-3 bg-red-500/20 border border-red-500/50 rounded-lg">
               <p className="text-sm text-red-300">{error}</p>
+            </div>
+          )}
+
+          {sendingEmail && (
+            <div className="p-3 bg-blue-500/20 border border-blue-500/50 rounded-lg">
+              <p className="text-sm text-blue-300 flex items-center gap-2">
+                <svg
+                  className="animate-spin h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Sending email invitation...
+              </p>
             </div>
           )}
 
@@ -176,7 +219,32 @@ const InviteUserModal = ({ isOpen, onClose, onSuccess }) => {
               className="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               disabled={loading}
             >
-              {loading ? "Creating..." : "Send Invite"}
+              {loading ? (
+                <>
+                  <svg
+                    className="animate-spin h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Sending...
+                </>
+              ) : (
+                "Send Invite"
+              )}
             </button>
           </div>
         </form>
