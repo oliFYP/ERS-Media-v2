@@ -6,6 +6,8 @@ import InviteSuccessModal from "../components/InviteSuccessModal";
 
 const SuperAdminDashboard = () => {
   const [profile, setProfile] = useState(null);
+  const [adminCount, setAdminCount] = useState(null);
+  const [clientCount, setClientCount] = useState(null);
   const navigate = useNavigate();
 
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -13,7 +15,8 @@ const SuperAdminDashboard = () => {
   const [inviteDetails, setInviteDetails] = useState(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchProfileAndCounts = async () => {
+      // Fetch profile
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -25,8 +28,22 @@ const SuperAdminDashboard = () => {
           .single();
         setProfile(data);
       }
+
+      // Fetch admin count
+      const { count: adminCount, error: adminError } = await supabase
+        .from("profiles")
+        .select("id", { count: "exact", head: true })
+        .eq("role", "admin");
+      if (!adminError) setAdminCount(adminCount);
+
+      // Fetch client count
+      const { count: clientCount, error: clientError } = await supabase
+        .from("profiles")
+        .select("id", { count: "exact", head: true })
+        .eq("role", "client");
+      if (!clientError) setClientCount(clientCount);
     };
-    fetchProfile();
+    fetchProfileAndCounts();
   }, []);
 
   const handleSignOut = async () => {
@@ -92,7 +109,9 @@ const SuperAdminDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-white">Total Admins</p>
-                <p className="text-3xl font-bold text-white mt-1">12</p>
+                <p className="text-3xl font-bold text-white mt-1">
+                  {adminCount !== null ? adminCount : "-"}
+                </p>
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
                 <svg
@@ -116,7 +135,9 @@ const SuperAdminDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-white">Total Clients</p>
-                <p className="text-3xl font-bold text-white mt-1">48</p>
+                <p className="text-3xl font-bold text-white mt-1">
+                  {clientCount !== null ? clientCount : "-"}
+                </p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
                 <svg

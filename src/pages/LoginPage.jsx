@@ -140,7 +140,9 @@ const LoginPage = () => {
             }}
           >
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-white">Welcome Back</h1>
+              <h1 className="text-3xl font-bold text-white">
+                Welcome <span style={{ color: 'hsl(32, 70%, 50%)' }}>Back</span>
+              </h1>
               <p className="text-gray-400 mt-2">
                 Sign in to access your dashboard
               </p>
@@ -166,7 +168,7 @@ const LoginPage = () => {
                     setEmail(e.target.value);
                     setError("");
                   }}
-                  className="w-full h-12 px-4 py-2 bg-input rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                  className="glass-orange-input w-full h-12 placeholder:text-gray-400"
                   required
                   disabled={loading}
                 />
@@ -186,7 +188,7 @@ const LoginPage = () => {
                       setPassword(e.target.value);
                       setError("");
                     }}
-                    className="w-full h-12 px-4 py-2 pr-12 bg-input rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                    className="glass-orange-input w-full h-12 pr-12 placeholder:text-gray-400"
                     required
                     disabled={loading}
                   />
