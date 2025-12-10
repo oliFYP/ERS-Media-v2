@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { ROLES } from "../utils/roleHelpers";
 import CompanyLogo from "../assets/company-logo.png";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Info } from "lucide-react";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -146,6 +146,14 @@ const LoginPage = () => {
               <p className="text-gray-400 mt-2">
                 Sign in to access your dashboard
               </p>
+              <div className="p-4 glass-card-dark mt-4">
+                <p className="text-sm text-gray-400 flex items-start gap-2">
+                  <Info className="w-8 h-8 text-orange-500" />
+                  New users must be invited by an administrator. If you've
+                  received an invitation email, click the link in that email to
+                  create your account.
+                </p>
+              </div>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-6">
